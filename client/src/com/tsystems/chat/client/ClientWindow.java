@@ -31,6 +31,7 @@ public class ClientWindow extends JFrame implements ActionListener, TCPConnectio
     setSize(WIDTH, HEIGHT);
     setLocationRelativeTo(null);
     setAlwaysOnTop(true);
+    setTitle("Telega v0.0.1");
 
     log.setEditable(false);
     log.setLineWrap(true);
@@ -44,7 +45,7 @@ public class ClientWindow extends JFrame implements ActionListener, TCPConnectio
 
     try
     {
-      connection=new TCPConnection(ClientWindow.this, "localhost", 8100);
+      connection=new TCPConnection(ClientWindow.this, "10.233.25.4", 8100);
     }
     catch (IOException e)
     {
