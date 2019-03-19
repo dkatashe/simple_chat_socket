@@ -1,6 +1,6 @@
 package com.tsystems.chat.client;
 
-import com.tsystems.network.TCPConnectionFull;
+import com.tsystems.network.TCPConnection;
 import com.tsystems.network.TCPConnectionListener;
 
 import javax.swing.*;
@@ -11,17 +11,19 @@ import java.io.IOException;
 
 public class ClientWindow extends JFrame implements ActionListener, TCPConnectionListener
 {
-  private static final Integer WIDTH = 600;
-  private static final Integer HEIGHT = 400;
+  private static final Integer WIDTH=600;
+  private static final Integer HEIGHT=400;
 
   public static void main(String[] args)
   {
     SwingUtilities.invokeLater(ClientWindow::new);
   }
 
-  private final JTextArea log = new JTextArea();
-  private final JTextField fieldNickname = new JTextField("Jhon Doe");
-  private final JTextField fieldInput = new JTextField();
+  private final JTextArea log=new JTextArea();
+  private final JTextField fieldNickname=new JTextField("Jhon Doe");
+  private final JTextField fieldInput=new JTextField();
+
+  private TCPConnection connection;
 
   private ClientWindow()
   {
@@ -40,21 +42,27 @@ public class ClientWindow extends JFrame implements ActionListener, TCPConnectio
 
     setVisible(true);
 
-   // create connection here
+    try
+    {
+      connection=new TCPConnection(ClientWindow.this, "localhost", 8100);
+    }
+    catch (IOException e)
+    {
+      printMessage(e.getMessage());
+    }
   }
 
   //to send message
   @Override public void actionPerformed(final ActionEvent e)
   {
-    String msg = fieldInput.getText();
-    if ("".equals(msg)) {
+    String msg=fieldInput.getText();
+    if ("".equals(msg))
+    {
       return;
     }
     fieldInput.setText(null);
-   //send message here
+    connection.sendString(fieldNickname.getText() + ": " + msg);
   }
-
-  //implement methods from listener here
 
   //for printing messages
   private synchronized void printMessage(String msg)
@@ -63,5 +71,25 @@ public class ClientWindow extends JFrame implements ActionListener, TCPConnectio
       log.append(msg + "\n");
       log.setCaretPosition(log.getDocument().getLength());
     });
+  }
+
+  @Override public void onConnect(TCPConnection connection)
+  {
+    printMessage("Connected to server");
+  }
+
+  @Override public void onMessage(TCPConnection connection, String message)
+  {
+    printMessage(message);
+  }
+
+  @Override public void onDisconnect(TCPConnection connection)
+  {
+    printMessage("Disconnected from server");
+  }
+
+  @Override public void onException(TCPConnection connection, Exception e)
+  {
+    printMessage("Connection exception: " + e);
   }
 }
