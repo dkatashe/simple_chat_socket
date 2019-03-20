@@ -20,8 +20,9 @@ public class ClientWindow extends JFrame implements ActionListener, TCPConnectio
   }
 
   private final JTextArea log=new JTextArea();
-  private final JTextField fieldNickname=new JTextField("Jhon Doe");
+  private final JTextField fieldNickname=new JTextField("John Doe");
   private final JTextField fieldInput=new JTextField();
+  private final JScrollPane logScroll = new JScrollPane(log);
 
   private TCPConnection connection;
 
@@ -30,12 +31,11 @@ public class ClientWindow extends JFrame implements ActionListener, TCPConnectio
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setSize(WIDTH, HEIGHT);
     setLocationRelativeTo(null);
-    setAlwaysOnTop(true);
-    setTitle("Telega v0.0.1");
+    setTitle("Telega");
 
     log.setEditable(false);
     log.setLineWrap(true);
-    add(log, BorderLayout.CENTER);
+    add(logScroll, BorderLayout.CENTER);
 
     fieldInput.addActionListener(this);
     add(fieldInput, BorderLayout.SOUTH);
