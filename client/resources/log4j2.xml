@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <!-- Logging to files -->
+        <RollingFile name="fileLoggerInfo" fileName="logs/client.info.log" filePattern="logs/client.info.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1.} %M - %msg%n</pattern>
+            </PatternLayout>
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="fileLoggerDebug" fileName="logs/client.debug.log" filePattern="logs/client.debug.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1.} %M - %msg%n</pattern>
+            </PatternLayout>
+            <Filters>
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="fileLoggerError" fileName="logs/client.error.log" filePattern="logs/client.error.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{10} %l - %msg%n%throwable</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+
+        <!-- Logging to console -->
+        <Console name="common" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1.} %M - %msg%n}" disableAnsi="false" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+        </Console>
+        <Console name="error" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{10} %l - %msg%n%throwable}" disableAnsi="false" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <root level="trace">
+            <AppenderRef ref="fileLoggerInfo" level="info" />
+            <AppenderRef ref="fileLoggerDebug" level="debug" />
+            <AppenderRef ref="fileLoggerError" level="error" />
+            <AppenderRef ref="error" level="error" />
+            <AppenderRef ref="common" level="trace" />
+        </root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="common" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1.} %M - %msg%n}" disableAnsi="false" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+        </Console>
+        <Console name="error" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{10} %l - %msg%n%throwable}" disableAnsi="false" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <root level="trace">
+            <AppenderRef ref="error" level="error" />
+            <AppenderRef ref="common" level="trace" />
+        </root>
+    </Loggers>
+</Configuration>
